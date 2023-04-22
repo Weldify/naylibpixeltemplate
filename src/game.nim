@@ -1,4 +1,4 @@
-import raylib, math
+import raylib
 
 
 type Game* = object
