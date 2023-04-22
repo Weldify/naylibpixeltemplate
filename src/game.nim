@@ -3,6 +3,7 @@ import raylib, math
 
 type Game* = object
   gameSize*: Vector2
+  mousePosition*: Vector2
   camera: Camera2D
 
 
@@ -19,11 +20,7 @@ proc draw*(self: var Game) =
   clearBackground(White)
 
   beginMode2D(self.camera)
-  
-  var
-    spinHor = cos(getTime() * 3'f) * 10'f
-    spinVer = sin(getTime() * 3'f) * 10'f
 
-  drawLine(64, 64, 64 + int32(spinHor.round), 64 + int32(spinVer.round), Black)
+  drawLine(64, 64, int32(self.mousePosition.x), int32(self.mousePosition.y), Black)
 
   endMode2D()

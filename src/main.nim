@@ -1,4 +1,4 @@
-import raylib, math, game
+import raylib, math, raymath, game
 
 proc main =
   setConfigFlags(flags(ConfigFlags.WindowResizable))
@@ -19,6 +19,25 @@ proc main =
   renderCamera.zoom = 1'f # 0 by default, makes stuff invisible
 
   while not windowShouldClose():
+    var
+      # float32 is more convenient
+      screenSize = Vector2(x: float32(getScreenWidth()), y: float32(getScreenHeight()))
+
+      renderOrigin = Vector2(x: round(-screenSize.x/2'f), y: round(-screenSize.y/2'f))
+
+      widthScale = max(1'f, floor(screenSize.x / game.gameSize.x))
+      heightScale = max(1'f, floor(screenSize.y / game.gameSize.y))
+      
+      # Scale must fit within both axes
+      renderScale = min(widthScale, heightScale)
+      renderSize = game.gameSize * renderScale
+
+      # Gap between the game display and the window itself
+      screenGap = Vector2(x: -renderOrigin.x - renderSize.x/2'f, y: -renderOrigin.y - renderSize.y/2'f)
+
+    # Calculate mouse position relative to game
+    let mousePos = (getMousePosition() - screenGap)/renderScale
+    game.mousePosition = Vector2(x: mousePos.x.round, y: mousePos.y.round)
     game.update()
 
     # Draw game to render target
@@ -26,27 +45,10 @@ proc main =
     game.draw()
     endTextureMode()
 
-    var
-      # float32 is more convenient
-      screenWidth = float32(getScreenWidth())
-      screenHeight = float32(getScreenHeight())
-      
-      # Render at screen center
-      renderOrigin = Vector2(x: -screenWidth/2'f, y: -screenHeight/2'f)
-      
-      widthScale = max(1'f, floor(screenWidth / game.gameSize.x))
-      heightScale = max(1'f, floor(screenHeight / game.gameSize.y))
-      
-      # Scale must fit within both axes
-      renderScale = min(widthScale, heightScale)
-
-      renderWidth = game.gameSize.x * renderScale
-      renderHeight = game.gameSize.y * renderScale
-
-      destRect = Rectangle(
-        x: round(-renderWidth/2'f), y: round(-renderHeight/2'f),
-        width: renderWidth, height: renderHeight
-      )
+    var destRect = Rectangle(
+      x: round(-renderSize.x/2'f), y: round(-renderSize.y/2'f),
+      width: renderSize.x, height: renderSize.y
+    )
 
     # Draw render target to screen
     beginDrawing()
