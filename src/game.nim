@@ -2,14 +2,12 @@ import raylib, math
 
 
 type Game* = object
-  gameWidth*: int32
-  gameHeight*: int32
+  gameSize*: Vector2
   camera: Camera2D
 
 
 proc createGame*(): Game =
-  result.gameWidth = 128
-  result.gameHeight = 128
+  result.gameSize = Vector2(x: 128'f, y: 128'f)
   result.camera.zoom = 1'f # 0 by default, makes stuff invisible
 
 
