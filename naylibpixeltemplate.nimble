@@ -14,7 +14,7 @@ requires "nim >= 1.9.3"
 requires "naylib >= 4.5.1"
 
 task debug, "Builds and runs debug":
-    exec "nim c -r -d:debug src/main.nim"
+    exec "nim c -r -d:debug --outdir:out src/main.nim"
 
 task releasewin, "Builds release for windows (no console)":
-    exec "nim c -d:danger --passL:-mwindows src/main.nim"
+    exec "nim c -d:danger --passL:-mwindows --outdir:out src/main.nim"
