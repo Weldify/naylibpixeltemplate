@@ -37,7 +37,7 @@ proc main =
 
     # Calculate mouse position relative to game
     let mousePos = (getMousePosition() - screenGap)/renderScale
-    game.mousePosition = Vector2(x: mousePos.x.round, y: mousePos.y.round)
+    game.mousePosition = Vector2(x: mousePos.x.round, y: mousePos.y.round).clamp(Vector2.zero, game.gameSize)
     game.update()
 
     # Draw game to render target
