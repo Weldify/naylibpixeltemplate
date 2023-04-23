@@ -8,7 +8,7 @@ proc main =
   setTargetFPS(60)
 
   var 
-    game = createGame()
+    game = Game.create()
     renderCamera = Camera2D()
     renderTarget = loadRenderTexture(int32(game.gameSize.x), int32(game.gameSize.y))
     sourceRect = Rectangle(

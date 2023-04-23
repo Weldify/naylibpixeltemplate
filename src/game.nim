@@ -7,7 +7,7 @@ type Game* = object
   camera: Camera2D
 
 
-proc createGame*(): Game =
+proc create*(_: typedesc[Game]): Game =
   result.gameSize = Vector2(x: 128'f, y: 128'f)
   result.camera.zoom = 1'f # 0 by default, makes stuff invisible
 
